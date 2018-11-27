@@ -3,7 +3,17 @@
 This repository contains e-kino application.
 
 # Installation
-TODO
+Use docker-compose to run application.
+```
+git clone https://github.com/e-kino/e-kino.git
+```
+```
+docker-compose up
+```
 
-# Contributors
-TODO
+You can visit application on `localhost:8070`.
+
+Database will be accessible on `localhost:3319`.
+
+# Authors
+* **Bartosz Basiński** - [bbasinski](https://github.com/bbasinski)
