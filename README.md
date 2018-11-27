@@ -3,7 +3,7 @@
 This repository contains e-kino application.
 
 # Installation
-Use docker-compose to run application.
+Use [docker-compose](https://docs.docker.com/compose/install) to run application.
 ```
 git clone https://github.com/e-kino/e-kino.git
 ```
