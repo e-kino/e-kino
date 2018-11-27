@@ -17,3 +17,4 @@ Database will be accessible on `localhost:3319`.
 
 # Authors
 * **Bartosz Basiński** - [bbasinski](https://github.com/bbasinski)
+* **Dawid Więcko** - [bbasinski](https://github.com/dwiecko)
