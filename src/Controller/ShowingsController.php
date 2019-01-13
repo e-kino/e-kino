@@ -31,7 +31,6 @@ class ShowingsController extends AbstractController
         }
 
         return new JsonResponse([
-            'programme' => $currentProgramme,
             'showings' => $showings
         ]);
     }
