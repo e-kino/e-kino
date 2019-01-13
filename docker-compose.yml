@@ -11,6 +11,13 @@ services:
       MYSQL_DATABASE: ekino
       MYSQL_USER: root
       MYSQL_PASSWORD: docker-root
+  flyway:
+    image: boxfuse/flyway:5.2.1
+    command: -url=jdbc:mysql://db -schemas=ekino -user=root -password=docker-root -connectRetries=60 migrate
+    volumes:
+    - ./db:/flyway/sql
+    depends_on:
+    - db
   php:
     container_name: ekino-php
     build: ./docker/php-fpm
