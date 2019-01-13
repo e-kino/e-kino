@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="programme")
  * @ORM\Entity(repositoryClass="App\Repository\ProgrammeRepository")
  */
-class Programme
+class Programme implements \JsonSerializable
 {
     /**
      * @var int
@@ -42,5 +44,33 @@ class Programme
      */
     private $dateEnd;
 
+    /**
+     * @var Showing[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Showing", mappedBy="programme")
+     */
+    private $showings;
 
+    public function __construct()
+    {
+        $this->showings = new ArrayCollection();
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'dateAdd' => $this->dateAdd->format('Y-m-d H:i:s'),
+            'dateStart' => $this->dateStart->format('Y-m-d H:i:s'),
+            'dateEnd' => $this->dateEnd->format('Y-m-d H:i:s'),
+        ];
+    }
+
+    /**
+     * @return Showing[]|Collection
+     */
+    public function getShowings(): Collection
+    {
+        return $this->showings;
+    }
 }

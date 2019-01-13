@@ -13,6 +13,10 @@ class ShowingsController extends AbstractController
 {
     /**
      * @Route("/showings/{date}", name="ekino_get_showings_by_date")
+     * @param $date
+     * @return JsonResponse
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \LogicException
      */
     public function getByDate($date)
     {
@@ -22,14 +26,9 @@ class ShowingsController extends AbstractController
 
         $currentProgramme = $programmeRepository->findCurrentProgramme();
 
-        $showings = $this->getDoctrine()
-            ->getRepository(Showing::class)
-            ->findBy([
-                'programme' => $currentProgramme
-            ]);
-
         return new JsonResponse([
-            'showings' => []
+            'programme' => $currentProgramme,
+            'showings' => $currentProgramme->getShowings()->toArray()
         ]);
     }
 }

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="movie")
  * @ORM\Entity
  */
-class Movie
+class Movie implements \JsonSerializable
 {
     /**
      * @var int
@@ -50,4 +50,21 @@ class Movie
     private $dateAdd;
 
 
+    /**
+     * Specify data which should be serialized to JSON
+     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'age' => $this->age,
+            'date_add' => $this->dateAdd->format('Y-m-d H:i:s'),
+        ];
+    }
 }

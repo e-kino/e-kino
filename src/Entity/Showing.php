@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="showing", indexes={@ORM\Index(name="fk_showing_film1_idx", columns={"movie_id"}), @ORM\Index(name="fk_showing_programme1_idx", columns={"programme_id"})})
  * @ORM\Entity
  */
-class Showing
+class Showing implements \JsonSerializable
 {
     /**
      * @var int
@@ -59,5 +59,21 @@ class Showing
      */
     private $programme;
 
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'dateAdd' => $this->dateAdd->format('Y-m-d H:i:s'),
+            'timeShow' => $this->timeShow->format('H:i'),
+            'movie' => $this->movie,
+        ];
+    }
 
+    /**
+     * @return Movie
+     */
+    public function getMovie(): Movie
+    {
+        return $this->movie;
+    }
 }
