@@ -21,7 +21,7 @@ USE `ekino` ;
 -- Table `ekino`.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ekino`.`user` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `role_id` VARCHAR(45) NULL,
   `email` VARCHAR(45) NOT NULL,
   `password` VARCHAR(255) NULL,
@@ -36,7 +36,7 @@ ENGINE = InnoDB;
 -- Table `ekino`.`movie`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ekino`.`movie` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` TEXT NULL,
   `age` VARCHAR(45) NULL,
@@ -49,7 +49,7 @@ ENGINE = InnoDB;
 -- Table `ekino`.`programme`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ekino`.`programme` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `date_add` DATETIME NULL,
   `date_start` DATETIME NULL,
   `date_end` DATETIME NULL,
@@ -61,7 +61,7 @@ ENGINE = InnoDB;
 -- Table `ekino`.`showing`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ekino`.`showing` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `date_add` DATETIME NULL,
   `time_show` TIME NULL,
   `programme_id` INT NOT NULL,
@@ -86,7 +86,7 @@ ENGINE = InnoDB;
 -- Table `ekino`.`booking`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ekino`.`booking` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `date_add` DATETIME NULL,
   `date_booking` DATETIME NULL,
   `user_id` INT NOT NULL,
