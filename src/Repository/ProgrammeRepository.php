@@ -18,7 +18,7 @@ class ProgrammeRepository extends ServiceEntityRepository
      * @return null|Programme
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findCurrentProgramme()
+    public function findCurrent()
     {
         $now = date('Y-m-d H:i:s');
 
@@ -26,6 +26,23 @@ class ProgrammeRepository extends ServiceEntityRepository
             ->andWhere('p.dateStart <= :date')
             ->andWhere('p.dateEnd >= :date')
             ->setParameter('date', $now)
+            ->getQuery();
+
+        return $qb->setMaxResults(1)->getOneOrNullResult();
+    }
+
+    /**
+     * Returns programme by date
+     * @param $date
+     * @return null|Programme
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findByDate($date)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.dateStart <= :date')
+            ->andWhere('p.dateEnd >= :date')
+            ->setParameter('date', $date)
             ->getQuery();
 
         return $qb->setMaxResults(1)->getOneOrNullResult();

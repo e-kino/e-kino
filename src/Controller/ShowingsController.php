@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Programme;
-use App\Entity\Showing;
 use App\Repository\ProgrammeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,11 +23,16 @@ class ShowingsController extends AbstractController
         $programmeRepository = $this->getDoctrine()
             ->getRepository(Programme::class);
 
-        $currentProgramme = $programmeRepository->findCurrentProgramme();
+        $currentProgramme = $programmeRepository->findByDate($date);
+
+        $showings = [];
+        if ($currentProgramme) {
+            $showings = $currentProgramme->getShowings()->toArray();
+        }
 
         return new JsonResponse([
             'programme' => $currentProgramme,
-            'showings' => $currentProgramme->getShowings()->toArray()
+            'showings' => $showings
         ]);
     }
 }
