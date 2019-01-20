@@ -2,8 +2,7 @@
   <div id="app">
     <nav class="navbar has-shadow">
       <div class="container">
-        <div class="navbar-brand"><a class="navbar-item" href="../"><img src="http://bulma.io/images/bulma-logo.png"
-                                                                         alt="Bulma: a modern CSS framework based on Flexbox"/></a>
+        <div class="navbar-brand"><a class="navbar-item" href="../">E-kino</a>
           <div class="navbar-burger burger" data-target="navMenu"><span></span><span></span><span></span></div>
         </div>
         <div class="navbar-menu" id="navMenu">
@@ -26,7 +25,8 @@
             <div class="card-content">
               <div class="content">
                 <div class="control has-icons-left has-icons-right">
-                  <input class="input is-large" type="search"/>
+                  <label for="search">Wyszukaj seanse</label>
+                  <input id="search" class="input is-large" type="date"/>
                   <span class="icon is-medium is-left">
                             <i class="fa fa-search"></i>
                         </span>
