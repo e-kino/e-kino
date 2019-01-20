@@ -8,7 +8,11 @@
               <div class="content">
                 <div class="control has-icons-left has-icons-right">
                   <label for="search">Wyszukaj seanse</label>
-                  <input id="search" class="input is-large" type="date"/>
+                  <b-datepicker
+                          class="is-large"
+                          placeholder="Wybierz datę, aby wyszukać seanse"
+                          icon="calendar-today">
+                  </b-datepicker>
                   <span class="icon is-medium is-left">
                             <i class="fa fa-search"></i>
                         </span>

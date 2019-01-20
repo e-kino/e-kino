@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-image">
         <figure class="image is-3by2">
-          <img src="https://unsplash.it/300/200/?random&pic=2" alt="">
+          <img src="https://unsplash.it/300/200/?random&pic=3" alt="">
         </figure>
         <div class="card-content is-overlay is-clipped">
               <span class="tag is-info">
