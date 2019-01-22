@@ -49,8 +49,28 @@ class MoviesController extends AbstractController
         //todo
     }
 
+    /**
+     * @Route("/movies", name="ekino_get_all_movies")
+     * @return JsonResponse
+     * @throws \LogicException
+     */
     public function getAll()
     {
-        //todo DW
+        /** @var MovieRepository $movieRepository */
+        $movieRepository = $this->getDoctrine()
+            ->getRepository(Movie::class);
+
+        $movies = $movieRepository->findAll();
+
+        if (empty($movies)) {
+            return new JsonResponse(['error' => [
+                'code' => 400,
+                'message' => "Nie znaleziono filmow"
+            ]]);
+        }
+
+        return new JsonResponse([
+            'movies' => $movies
+        ]);
     }
 }
