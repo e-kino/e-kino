@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Programme;
 use App\Repository\ProgrammeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ProgrammeController extends AbstractController
 {
