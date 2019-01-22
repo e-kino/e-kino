@@ -55,11 +55,11 @@ class UsersController extends AbstractController
      * @return JsonResponse
      * @throws \LogicException
      */
-    public function getUserById($id)
+    public function getById($id)
     {
         /** @var UserRepository $userRepository */
         $userRepository = $this->getDoctrine()
-            ->getRepository(User::class);
+                                ->getRepository(User::class);
 
         $user = $userRepository->find($id);
 
@@ -75,8 +75,35 @@ class UsersController extends AbstractController
         ]);
     }
 
-    public function delete($id)
+    /**
+     * @Route("/users/remove/{id}", name="ekino_remove_user_by_id")
+     * @param $id
+     * @return JsonResponse
+     * @throws \LogicException
+     */
+    public function removeById($id)
     {
-        //todo DW
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->getDoctrine()
+                                ->getRepository(User::class);
+
+        $userToRemove = $userRepository->find($id);
+
+        $entityManager = $this->getDoctrine()
+                                ->getManager();
+
+        try{
+            $entityManager -> remove($userToRemove);
+
+            $entityManager -> flush();
+        }
+        catch (\Exception $exception){
+            return new JsonResponse(['error' =>  "Nie mozna usunac podanego uzytkownika." + $exception],
+                400);
+        }
+
+        return new JsonResponse([
+            'message' => "Pomyslnie usunieto uzytkownika o podanym ID"
+        ]);
     }
 }
