@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="is-flex" style="flex-direction: column">
     <nav class="navbar has-shadow">
       <div class="container">
         <div class="navbar-brand"><a class="navbar-item" href="../">E-kino</a>
@@ -19,6 +19,7 @@
       </div>
     </nav>
     <router-view/>
+    <div style="flex-grow: 1"></div>
     <div class="columns is-mobile is-centered">
       <div class="column is-half is-narrow"></div>
     </div>
@@ -38,5 +39,7 @@
 </template>
 
 <style>
-
+ html, body, #app {
+   height: 100%;
+ }
 </style>
