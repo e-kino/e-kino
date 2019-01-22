@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class RegisterController extends AbstractController
 {
     /**
-     * @Route("/register", methods={"POST"} name="ekino_register")
+     * @Route("/register", methods={"POST"}, name="ekino_register")
      * @param Request $request
      */
     public function register(Request $request)
