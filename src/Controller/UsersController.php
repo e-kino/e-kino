@@ -49,6 +49,32 @@ class UsersController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/users/{id}", name="ekino_get_user_by_id")
+     * @param $id
+     * @return JsonResponse
+     * @throws \LogicException
+     */
+    public function getUserById($id)
+    {
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->getDoctrine()
+            ->getRepository(User::class);
+
+        $user = $userRepository->find($id);
+
+        if (empty($user)) {
+            return new JsonResponse(['error' => [
+                'code' => 400,
+                'message' => "Nie znaleziono uzytkownika"
+            ]]);
+        }
+
+        return new JsonResponse([
+            'users' => $user
+        ]);
+    }
+
     public function delete($id)
     {
         //todo DW
