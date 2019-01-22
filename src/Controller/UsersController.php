@@ -51,6 +51,6 @@ class UsersController extends AbstractController
 
     public function delete($id)
     {
-
+        //todo DW
     }
 }

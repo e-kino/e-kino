@@ -35,6 +35,7 @@ class MoviesController extends AbstractController
      */
     public function createMovie()
     {
+        //todo DW
         //todo
     }
 
@@ -44,11 +45,12 @@ class MoviesController extends AbstractController
      */
     public function deleteMovie($id)
     {
+        //todo DW
         //todo
     }
 
     public function getAll()
     {
-
+        //todo DW
     }
 }

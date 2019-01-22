@@ -14,6 +14,8 @@ class RegisterController extends AbstractController
      */
     public function register(Request $request)
     {
+        //todo TB
+
         //todo get json from request
         //todo create new user and return it
     }

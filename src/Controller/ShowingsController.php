@@ -41,6 +41,8 @@ class ShowingsController extends AbstractController
     public function createShowing()
     {
         //todo
+        //todo DW
+
     }
 
     /**
@@ -50,5 +52,7 @@ class ShowingsController extends AbstractController
     public function deleteShowing($id)
     {
         //todo
+        //todo DW
+
     }
 }

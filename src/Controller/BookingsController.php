@@ -12,7 +12,7 @@ class BookingsController extends AbstractController
      */
     public function createBooking()
     {
-        //todo
+        //todo TB
     }
 
     /**
@@ -21,11 +21,11 @@ class BookingsController extends AbstractController
      */
     public function getUserBookings($userId)
     {
-        //todo
+        //todo TB
     }
 
     public function getAll()
     {
-
+        //todo TB
     }
 }

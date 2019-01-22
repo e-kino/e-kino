@@ -14,6 +14,7 @@ class LoginController extends AbstractController
      */
     public function login(Request $request)
     {
+        //todo TB
         //todo get json from request
         //todo create new session
     }
@@ -24,6 +25,7 @@ class LoginController extends AbstractController
      */
     public function logout(Request $request)
     {
+        //todo TB
         //todo destroy session
     }
 }
