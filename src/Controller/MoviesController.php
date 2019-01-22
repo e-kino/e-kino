@@ -33,24 +33,24 @@ class MoviesController extends AbstractController
     /**
      * @Route("/movies", methods={"POST"} name="ekino_create_movies")
      */
-    public function createMovie()
-    {
+    //public function createMovie()
+    //{
         //todo DW
         //todo
-    }
+    //}
 
     /**
      * @Route("/movies/{id}", methods={"DELETE"} name="ekino_delete_movies")
      * @param $id
      */
-    public function deleteMovie($id)
-    {
+    //public function deleteMovie($id)
+    //{
         //todo DW
         //todo
-    }
+    //}
 
-    public function getAll()
-    {
+    //public function getAll()
+    //{
         //todo DW
-    }
+    //}
 }

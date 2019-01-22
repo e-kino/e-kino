@@ -1,0 +1,8 @@
+2019/01/21 18:34:44 [error] 6#6: *1 FastCGI sent in stderr: "PHP message: PHP Warning:  require(/var/www/symfony/vendor/autoload.php): failed to open stream: No such file or directory in /var/www/symfony/config/bootstrap.php on line 5
+PHP message: PHP Stack trace:
+PHP message: PHP   1. {main}() /var/www/symfony/public/index.php:0
+PHP message: PHP   2. require() /var/www/symfony/public/index.php:7
+PHP message: PHP Fatal error:  require(): Failed opening required '/var/www/symfony/vendor/autoload.php' (include_path='.:/usr/share/php7') in /var/www/symfony/config/bootstrap.php on line 5
+PHP message: PHP Stack trace:
+PHP message: PHP   1. {main}() /var/www/symfony/public/index.php:0
+PHP message: PHP   2. require() /var/www/symfony/public/index.php:7" while reading response header from upstream, client: 172.18.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "fastcgi://172.18.0.4:9001", host: "localhost:8070"
