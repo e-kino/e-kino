@@ -60,4 +60,36 @@ class ProgrammeController extends AbstractController
             'programmes' => $programme
         ]);
     }
+
+    /**
+     * @Route("/programmes/remove/{id}", name="ekino_remove_programme_by_id")
+     * @param $id
+     * @return JsonResponse
+     * @throws \LogicException
+     */
+    public function removeById($id)
+    {
+        /** @var ProgrammeRepository $programmeRepository */
+        $programmeRepository = $this->getDoctrine()
+                                    ->getRepository(Programme::class);
+
+        $programmeToRemove = $programmeRepository->find($id);
+
+        $entityManager = $this->getDoctrine()
+                                ->getManager();
+
+        try{
+            $entityManager -> remove($programmeToRemove);
+
+            $entityManager -> flush();  
+        }
+        catch (\Exception $exception){
+            return new JsonResponse(['error' =>  "Nie mozna usunac podanego programu." + $exception],
+                400);
+        }
+
+        return new JsonResponse([
+            'message' => "Pomyslnie usunieto program o podanym ID"
+        ]);
+    }
 }
