@@ -80,7 +80,8 @@ class MoviesController extends AbstractController
 
         $movie = $movieRepository -> find($id);
 
-        $entityManager = $this -> getDoctrine() -> getManager();
+        $entityManager = $this -> getDoctrine()
+                               -> getManager();
 
         try{
             $entityManager -> remove($movie);
