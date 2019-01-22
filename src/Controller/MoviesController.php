@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
-use App\Entity\Programme;
 use App\Repository\MovieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,5 +28,27 @@ class MoviesController extends AbstractController
         return new JsonResponse([
             'movies' => $movieForAGivenName
         ]);
+    }
+
+    /**
+     * @Route("/movies", methods={"POST"} name="ekino_create_movies")
+     */
+    public function createMovie()
+    {
+        //todo
+    }
+
+    /**
+     * @Route("/movies/{id}", methods={"DELETE"} name="ekino_delete_movies")
+     * @param $id
+     */
+    public function deleteMovie($id)
+    {
+        //todo
+    }
+
+    public function getAll()
+    {
+
     }
 }

@@ -49,4 +49,8 @@ class UsersController extends AbstractController
         ]);
     }
 
+    public function delete($id)
+    {
+
+    }
 }
