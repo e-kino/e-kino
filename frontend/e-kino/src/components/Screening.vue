@@ -12,9 +12,9 @@
         </div>
       </div>
       <footer class="card-footer">
-        <a class="card-footer-item">
+        <router-link to="/booking/100" class="card-footer-item">
           Rezerwuj
-        </a>
+        </router-link>
       </footer>
     </div>
   </div>
@@ -22,7 +22,10 @@
 
 <script>
   export default {
-    name: "Screening"
+    name: "Screening",
+    props: {
+      showing: Object
+    }
   }
 </script>
 

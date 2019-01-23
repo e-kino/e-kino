@@ -21,3 +21,7 @@
 172.18.0.1 - - [22/Jan/2019:20:04:01 +0000] "GET / HTTP/1.1" 500 53797 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
 172.18.0.1 - - [22/Jan/2019:20:04:53 +0000] "GET / HTTP/1.1" 500 53822 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
 172.18.0.1 - - [22/Jan/2019:20:05:15 +0000] "GET / HTTP/1.1" 404 2045 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+172.18.0.1 - - [22/Jan/2019:20:51:28 +0000] "GET /showings/%7Bdate%7D HTTP/1.1" 200 25 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+172.18.0.1 - - [22/Jan/2019:20:51:37 +0000] "GET /showings/1-01-2018 HTTP/1.1" 200 25 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+172.18.0.1 - - [23/Jan/2019:09:21:53 +0000] "GET / HTTP/1.1" 404 2045 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+172.18.0.1 - - [23/Jan/2019:09:21:53 +0000] "GET /favicon.ico HTTP/1.1" 404 11188 "http://localhost:8070/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"

@@ -36,22 +36,23 @@ class ShowingsController extends AbstractController
     }
 
     /**
-     * @Route("/showings", methods={"POST"} name="ekino_create_showing")
+     * @Route("/showings", methods={"POST"}, name="ekino_create_showing")
      */
-    //public function createShowing()
-    //{
+    public function createShowing()
+    {
         //todo
         //todo DW
-    //}
+
+    }
 
     /**
-     * @Route("/showings/{id}", methods={"DELETE"} name="ekino_delete_showing")
+     * @Route("/showings/{id}", methods={"DELETE"}, name="ekino_delete_showing")
      * @param $id
      */
-    //public function deleteShowing($id)
-    //{
+    public function deleteShowing($id)
+    {
         //todo
         //todo DW
 
-    //}
+    }
 }
