@@ -90,10 +90,11 @@ class LoginController extends AbstractController
      */
     public function logout()
     {
+        session_start();
         session_destroy();
 
         return new JsonResponse([
-            'message' => "wylogowanie sie powidolo"
+            'message' => "Wylogowanie się powidło"
         ]);
     }
 
