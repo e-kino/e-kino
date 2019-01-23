@@ -49,4 +49,25 @@ class UserRepository extends ServiceEntityRepository
         return $qb->setMaxResults(1)
                   ->getOneOrNullResult();
     }
+      /**
+     * Get user by the email and password.
+     * @param $userEmail,$userPass
+     * Find the user with email and password.
+     * @return null|User
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findByEmailPass($userEmail,$userPass)
+    {
+         $qb = $this->createQueryBuilder('user')
+                    ->select('user')
+                    ->andWhere('user.email == :email')
+                    ->andWhere('user.password == :pass')
+                    ->setParameter('email', $userEmail)
+                    ->setParameter('pass', $userPass)
+                    ->getQuery();
+
+        return $qb->setMaxResults(1)
+                  ->getOneOrNullResult();
+       
+    }
 }
