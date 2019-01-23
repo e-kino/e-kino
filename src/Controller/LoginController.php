@@ -60,10 +60,8 @@ class LoginController extends AbstractController
     }
     protected function isEmpty($login,$pass)
     {
-        echo "isEMpty\n";
         if(trim($login)==='' || trim($pass)==='')
         {
-            echo "nie uzupelniono\n";
             return false;
         }
         return true;
