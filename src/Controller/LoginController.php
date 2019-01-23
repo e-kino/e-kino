@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,17 +19,22 @@ class LoginController extends AbstractController
      * @return JsonResponse
      */
     public function login(Request $request)
-    {
-        
-        echo ("Recive Request content - ".$request->getContent()."\n");
-        //$request->getUser();
+    {   
+        //echo ("Recive Request content - ".$request->getContent()."\n");
         $userData = json_decode($request->getContent(), true);
         print_r($userData);
-        if(!$this->isEmpty($userData['login'],$userData['password']))
+        if(!$this->isEmpty($userData['email'],$userData['password']))
         {
             return new JsonResponse([
             'error' => 1,
             'message' => "Nie uzupełniono wszystkich pól"
+            ]);
+        };
+        if(!$this->checkUserInDb($userData['email']))
+        {
+            return new JsonResponse([
+            'error' => 1,
+            'message' => "Nie odnaleziono użytkownika o podanym loginie"
             ]);
         }
         //$this->setSession($userData);
@@ -35,9 +42,7 @@ class LoginController extends AbstractController
             'error' => 0,
             'message' => "Logowanie się powiodło"
             ]);
-        
     }
-
     /**
      * @Route("/logout", methods={"POST"}, name="ekino_logout")
      * @param Request $request
@@ -58,13 +63,24 @@ class LoginController extends AbstractController
         $this->get('session')->set('loginUserEmail', $userData['email']);
         $this->get('session')->set('loginUserRole', $userData['role']);
     }
-    protected function isEmpty($login,$pass)
+    protected function isEmpty($email,$pass)
     {
-        if(trim($login)==='' || trim($pass)==='')
+        if(trim($email)==='' || trim($pass)==='')
         {
             return false;
         }
         return true;
+    }
+    protected function checkUserInDb($email)
+    {
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->getDoctrine()->getRepository(User::class);
+        $user = $userRepository->findByEmail($email);
+        if(count($user)>0)
+        {
+            return true;
+        }
+        return false;
     }
     /**
      * @Route("/login", methods={"GET"}, name="ekino_login_get")
@@ -96,7 +112,7 @@ class LoginController extends AbstractController
         return new Response(
             '<html><body><p>FORM</p>
         <form name="myForm" action="http://localhost:8070/login" method="POST">
-          Login: <input type="text" name="login"><br>
+          Email: <input type="text" name="email"><br>
           Password: <input type="password" name="password"><br>
           
           <input type="button" value="Submit" onclick="validateForm();" />
@@ -111,7 +127,7 @@ console.log('validateForm');
 
     var responseData;
 	var obj = new Object();
-   obj.login = document.forms["myForm"]["login"].value;
+   obj.email = document.forms["myForm"]["email"].value;
    obj.password  = document.forms["myForm"]["password"].value;
 
    var jsonString= JSON.stringify(obj);
