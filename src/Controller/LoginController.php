@@ -69,19 +69,10 @@ class LoginController extends AbstractController
     {
         /** @var UserRepository $userRepository */
         $userRepository = $this->getDoctrine()->getRepository(User::class);
-        //print_r(get_class_methods($userRepository));
-        $encodedPass = $this->generateUserPassword($email, $pass);
-        //echo 'Encoded password - '.$encodedPass."\n";
-        $user = $userRepository->findByEmail($email);
-        #$user = $userRepository->findByEmailPass($email,$encodedPass);
-        return !is_null($user);
-    }
 
-    protected function generateUserPassword($user, $pass)
-    {
-        $passToEncode = $user . $pass;
-//        echo $passToEncode;
-        return (sha1(md5($passToEncode)));
+        $user = $userRepository->findByEmailPass($email, password_hash($pass, PASSWORD_BCRYPT));
+
+        return !is_null($user);
     }
 
     protected function setSession($userEmail)
