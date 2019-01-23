@@ -138,16 +138,11 @@ class LoginController extends AbstractController
         <form name="myForm" action="http://localhost:8070/login" method="POST">
           Email: <input type="text" name="email"><br>
           Password: <input type="password" name="password"><br>
-          
           <input type="button" value="Submit" onclick="validateForm();" />
-        </form></body></html><p id=\'response\'>aa</p>'
-        );
-    }
-}
-?>
- <script>
+        </form></body></html><p id=\'response\'>aa</p>
+        <script>
 function validateForm() {
-console.log('validateForm');
+console.log(\'validateForm\');
 
     var responseData;
 	var obj = new Object();
@@ -166,13 +161,17 @@ console.log('validateForm');
 		if (this.readyState == 4 && this.status == 200)
 		{
                    responseData=xhttp.responseText
-                   console.log('---Response text  ---');
+                   console.log(\'---Response text  ---\');
                    console.log(responseData);
-                   document.getElementById('response').innerText='ok';
+                   document.getElementById(\'response\').innerText=\'ok\';
 		}
 	};
         xhttp.open("POST", "http://localhost:8070/login", true);
          xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhttp.send(jsonString);
 }
-</script>
+</script>'
+        );
+    }
+}
+?>
