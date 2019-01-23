@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="email_UNIQUE", columns={"email"})})
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements \JsonSerializable
 {
     /**
      * @var int
@@ -57,4 +57,22 @@ class User
     private $active = '1';
 
 
+    /**
+     * Specify data which should be serialized to JSON
+     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'roleId' => $this->roleId,
+            'email' => $this->email,
+            'password' => $this->password,
+            'dateAdd' => ($this->dateAdd) ? $this->dateAdd->format('Y-m-d H:i:s') : null,
+            'active' => $this->active,
+        ];
+    }
 }
