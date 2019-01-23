@@ -30,18 +30,18 @@ class LoginController extends AbstractController
             $err=1;
             $message="Nie uzupełniono wszystkich pól";
         };
-        if(!$err)
+        if($err===0)
         {
-            //echo "check email\n";
+            echo "check email\n";
             if(!$this->checkUserEmail($userData['email']))
             {
                 $err=1;
                 $message="Nie prawidłowy adres email";
             }  
         }
-        if(!$err)
+        if($err===0)
         {
-            //echo "check in db\n";
+            echo "check in db\n";
             if(!$this->checkUserInDb($userData['email'],$userData['password']))
             {
                 $err=1;
