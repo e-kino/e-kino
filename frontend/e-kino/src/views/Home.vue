@@ -30,7 +30,7 @@
     </section>
     <section class="container">
       <div class="columns is-multiline" style="margin-top: 30px">
-        <screening v-for="showing in showings" :key="showing.id"></screening>
+        <screening v-for="showing in showings" :key="showing.id" :showing="showing"></screening>
       </div>
     </section>
   </div>
@@ -57,7 +57,7 @@
     },
     methods: {
       fetchShowings() {
-        let formattedDate = moment(this.date).format('YYYY-MM-DD')
+        let formattedDate = moment(this.date).format('YYYY-MM-DD');
 
         axios.get(`/showings/${formattedDate}`)
           .then((r) => {
