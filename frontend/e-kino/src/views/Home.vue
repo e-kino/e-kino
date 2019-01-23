@@ -10,6 +10,8 @@
                   <label for="search">Wyszukaj seanse</label>
                   <b-datepicker
                           class="is-large"
+                          v-model="date"
+                          @input="fetchShowings"
                           placeholder="Wybierz datę, aby wyszukać seanse"
                           icon="calendar-today">
                   </b-datepicker>
@@ -28,16 +30,7 @@
     </section>
     <section class="container">
       <div class="columns is-multiline" style="margin-top: 30px">
-        <screening></screening>
-        <screening></screening>
-        <screening></screening>
-        <screening></screening>
-        <screening></screening>
-        <screening></screening>
-        <screening></screening>
-        <screening></screening>
-        <screening></screening>
-
+        <screening v-for="showing in showings" :key="showing.id"></screening>
       </div>
     </section>
   </div>
@@ -45,12 +38,33 @@
 
 <script>
   import Screening from '@/components/Screening'
+  import axios from 'axios'
+  import moment from 'moment'
 
   export default {
     name: 'home',
     components: {
       Screening
     },
+    data() {
+      return {
+        showings: [],
+        date: new Date()
+      }
+    },
+    mounted() {
+      this.fetchShowings()
+    },
+    methods: {
+      fetchShowings() {
+        let formattedDate = moment(this.date).format('YYYY-MM-DD')
+
+        axios.get(`/showings/${formattedDate}`)
+          .then((r) => {
+            this.showings = r.data.showings
+          })
+      }
+    }
   };
 </script>
 
