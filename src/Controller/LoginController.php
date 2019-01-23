@@ -143,27 +143,24 @@ class LoginController extends AbstractController
         <script>
 function validateForm() {
 console.log(\'validateForm\');
-
     var responseData;
-	var obj = new Object();
+    var jsonData;
+    var obj = new Object();
    obj.email = document.forms["myForm"]["email"].value;
    obj.password  = document.forms["myForm"]["password"].value;
-
    var jsonString= JSON.stringify(obj);
 	console.log(jsonString);
 	var xhttp = new XMLHttpRequest();
-	
-	
 	xhttp.onreadystatechange = function()
 	{
-		//console.log(this.readyState);
-                //console.log(this.status);
 		if (this.readyState == 4 && this.status == 200)
 		{
                    responseData=xhttp.responseText
                    console.log(\'---Response text  ---\');
+                   jsonData = JSON.parse(responseData);
                    console.log(responseData);
-                   document.getElementById(\'response\').innerText=\'ok\';
+                   console.log(jsonData[\'message\']);
+                   document.getElementById(\'response\').innerText=jsonData[\'message\'];
 		}
 	};
         xhttp.open("POST", "http://localhost:8070/login", true);
