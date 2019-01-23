@@ -84,7 +84,7 @@ class ProgrammeController extends AbstractController
             $entityManager -> flush();  
         }
         catch (\Exception $exception){
-            return new JsonResponse(['error' =>  "Nie mozna usunac podanego programu." + $exception],
+            return new JsonResponse(['error' =>  "Nie mozna usunac podanego programu.".$exception],
                 400);
         }
 
