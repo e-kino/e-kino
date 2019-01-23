@@ -48,11 +48,29 @@ class ShowingsController extends AbstractController
     /**
      * @Route("/showings/{id}", methods={"DELETE"}, name="ekino_delete_showing")
      * @param $id
+     * @return JsonResponse
      */
     public function deleteShowing($id)
     {
-        //todo
-        //todo DW
+        $showingToRemove = $this->getDoctrine()
+            ->getRepository(Showing::class)
+            ->find($id);
 
+        $entityManager = $this->getDoctrine()
+            ->getManager();
+
+        try{
+            $entityManager -> remove($showingToRemove);
+
+            $entityManager -> flush();
+        }
+        catch (\Exception $exception){
+            return new JsonResponse(['error' =>  "Nie mozna usunac podanego spektaklu.".$exception],
+                400);
+        }
+
+        return new JsonResponse([
+            'message' => "Pomyslnie usunieto spektakl o podanym ID"
+        ]);
     }
 }
