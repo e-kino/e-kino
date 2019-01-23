@@ -70,9 +70,10 @@ class LoginController extends AbstractController
         /** @var UserRepository $userRepository */
         $userRepository = $this->getDoctrine()->getRepository(User::class);
 
-        $user = $userRepository->findByEmailPass($email, password_hash($pass, PASSWORD_BCRYPT));
+        /** @var User $user */
+        $user = $userRepository->findByEmail($email);
 
-        return !is_null($user);
+        return !is_null($user) && password_verify($pass, $user->getPassword());
     }
 
     protected function setSession($userEmail)

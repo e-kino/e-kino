@@ -75,4 +75,12 @@ class User implements \JsonSerializable
             'active' => $this->active,
         ];
     }
+
+    /**
+     * @return null|string
+     */
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
 }
