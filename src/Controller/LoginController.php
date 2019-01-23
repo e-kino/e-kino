@@ -4,12 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class LoginController extends AbstractController
 {
@@ -21,40 +20,78 @@ class LoginController extends AbstractController
      */
     public function login(Request $request)
     {
-        $err=0;
-        $message='Logowanie się powiodło';
+        $err = 0;
+        $message = 'Logowanie się powiodło';
         //echo ("Recive Request content - ".$request->getContent()."\n");
         $userData = json_decode($request->getContent(), true);
         //print_r($userData);
-        if(!$this->isEmpty($userData['email'],$userData['password']))
-        {
-            $err=1;
-            $message="Nie uzupełniono wszystkich pól";
+        if (!$this->isEmpty($userData['email'], $userData['password'])) {
+            $err = 1;
+            $message = "Nie uzupełniono wszystkich pól";
         };
-        if($err===0)
-        {
+        if ($err === 0) {
             echo "check email\n";
-            if(!$this->checkUserEmail($userData['email']))
-            {
-                $err=1;
-                $message="Nie prawidłowy adres email";
+            if (!$this->checkUserEmail($userData['email'])) {
+                $err = 1;
+                $message = "Nie prawidłowy adres email";
             }
         }
-        if($err===0)
-        {
+        if ($err === 0) {
             echo "check in db\n";
-            if(!$this->checkUserInDb($userData['email'],$userData['password']))
-            {
-                $err=1;
-                $message="Nie prawidłowe dane logowania";
+            if (!$this->checkUserInDb($userData['email'], $userData['password'])) {
+                $err = 1;
+                $message = "Nie prawidłowe dane logowania";
             }
         }
         $this->setSession($userData['email']);
         return new JsonResponse([
             'error' => $err,
             'message' => $message
-            ]);
+        ]);
     }
+
+    protected function isEmpty($email, $pass)
+    {
+        if (trim($email) === '' || trim($pass) === '') {
+            return false;
+        }
+        return true;
+    }
+
+    protected function checkUserEmail($email)
+    {
+        $regex = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,10})$/";
+        $email = strtolower($email);
+        return preg_match($regex, $email);
+    }
+
+    protected function checkUserInDb($email, $pass)
+    {
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->getDoctrine()->getRepository(User::class);
+        //print_r(get_class_methods($userRepository));
+        $encodedPass = $this->generateUserPassword($email, $pass);
+        //echo 'Encoded password - '.$encodedPass."\n";
+        $user = $userRepository->findByEmail($email);
+        #$user = $userRepository->findByEmailPass($email,$encodedPass);
+        return count($user);
+    }
+
+    protected function generateUserPassword($user, $pass)
+    {
+        $passToEncode = $user . $pass;
+        echo $passToEncode;
+        return (sha1(md5($passToEncode)));
+    }
+
+    protected function setSession($userEmail)
+    {
+        // SET SESSION
+        //$this->get('session')->set('loginUserId', $userData['id']);
+        $this->get('session')->set('loginUserEmail', $userEmail);
+        //echo "SESSION - ".$this->get('session')->get('loginUserEmail')."\n";
+    }
+
     /**
      * @Route("/logout", methods={"POST"}, name="ekino_logout")
      * @return JsonResponse
@@ -67,67 +104,35 @@ class LoginController extends AbstractController
             'message' => "wylogowanie sie powidolo"
         ]);
     }
-    protected function setSession($userEmail)
-    {
-        // SET SESSION
-        //$this->get('session')->set('loginUserId', $userData['id']);
-        $this->get('session')->set('loginUserEmail', $userEmail);
-        //echo "SESSION - ".$this->get('session')->get('loginUserEmail')."\n";
-    }
-    protected function isEmpty($email,$pass)
-    {
-        if(trim($email)==='' || trim($pass)==='')
-        {
-            return false;
-        }
-        return true;
-    }
-    protected function checkUserEmail($email)
-    {
-        $regex = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,10})$/";
-        $email = strtolower($email);
-        return preg_match($regex, $email);
-    }
-    protected function checkUserInDb($email,$pass)
-    {
-        /** @var UserRepository $userRepository */
-        $userRepository = $this->getDoctrine()->getRepository(User::class);
-        //print_r(get_class_methods($userRepository));
-        $encodedPass=$this->generateUserPassword($email,$pass);
-        //echo 'Encoded password - '.$encodedPass."\n";
-        $user = $userRepository->findByEmail($email);
-        #$user = $userRepository->findByEmailPass($email,$encodedPass);
-        return count($user);
-    }
 
-    protected function generateUserPassword($user,$pass)
-    {
-        $passToEncode=$user.$pass;
-        echo $passToEncode;
-        return ( sha1(md5($passToEncode)));
-    }
     /**
      * @Route("/login", methods={"GET"}, name="ekino_login_get")
      * @return JsonResponse
      */
     public function loginGet()
     {
-        return new JsonResponse(['error' => [
+        return new JsonResponse([
+            'error' => [
                 'code' => 405,
                 'message' => "Method not allowed you ugly buster"
-            ]]);
+            ]
+        ]);
     }
+
     /**
      * @Route("/logout", methods={"GET"}, name="ekino_logout_get")
      * @return JsonResponse
      */
     public function logoutGet()
     {
-        return new JsonResponse(['error' => [
+        return new JsonResponse([
+            'error' => [
                 'code' => 405,
                 'message' => "Method not allowed you ugly buster"
-            ]]);
+            ]
+        ]);
     }
+
     /**
      * @Route("/loginpage", methods={"GET"}, name="ekino_loginpage")
      */
