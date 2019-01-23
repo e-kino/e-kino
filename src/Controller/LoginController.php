@@ -17,9 +17,10 @@ class LoginController extends AbstractController
      * @Route("/login", methods={"POST"}, name="ekino_login")
      * @param Request $request
      * @return JsonResponse
+     * @throws \LogicException
      */
     public function login(Request $request)
-    {   
+    {
         $err=0;
         $message='Logowanie się powiodło';
         //echo ("Recive Request content - ".$request->getContent()."\n");
@@ -37,7 +38,7 @@ class LoginController extends AbstractController
             {
                 $err=1;
                 $message="Nie prawidłowy adres email";
-            }  
+            }
         }
         if($err===0)
         {
@@ -45,31 +46,30 @@ class LoginController extends AbstractController
             if(!$this->checkUserInDb($userData['email'],$userData['password']))
             {
                 $err=1;
-                $message="Nie prawidłowe dane logowania"; 
-            }  
+                $message="Nie prawidłowe dane logowania";
+            }
         }
         $this->setSession($userData['email']);
         return new JsonResponse([
             'error' => $err,
             'message' => $message
-            ]);  
+            ]);
     }
     /**
      * @Route("/logout", methods={"POST"}, name="ekino_logout")
-     * @param Request $request
      * @return JsonResponse
      */
-    public function logout(Request $request)
+    public function logout()
     {
-        //todo TB
-        //todo destroy session
+        session_destroy();
+
         return new JsonResponse([
             'message' => "wylogowanie sie powidolo"
         ]);
     }
     protected function setSession($userEmail)
     {
-        // SET SESSION 
+        // SET SESSION
         //$this->get('session')->set('loginUserId', $userData['id']);
         $this->get('session')->set('loginUserEmail', $userEmail);
         //echo "SESSION - ".$this->get('session')->get('loginUserEmail')."\n";
@@ -99,7 +99,7 @@ class LoginController extends AbstractController
         #$user = $userRepository->findByEmailPass($email,$encodedPass);
         return count($user);
     }
-  
+
     protected function generateUserPassword($user,$pass)
     {
         $passToEncode=$user.$pass;
@@ -171,4 +171,4 @@ console.log(\'validateForm\');
         );
     }
 }
-?>
+
