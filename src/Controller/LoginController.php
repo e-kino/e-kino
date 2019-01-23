@@ -12,12 +12,13 @@ class LoginController extends AbstractController
      * @Route("/login", methods={"POST"} name="ekino_login")
      * @param Request $request
      */
-    //public function login(Request $request)
-    //{
+    public function login(Request $request)
+    {
         //todo TB
         //todo get json from request
         //todo create new session
-    //}
+        // test git
+    }
 
     /**
      * @Route("/logout", methods={"POST"} name="ekino_logout")
