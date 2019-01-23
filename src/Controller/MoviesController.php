@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Movie;
 use App\Repository\MovieRepository;
-use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +35,7 @@ class MoviesController extends AbstractController
      * @Route("/movies", methods={"POST"}, name="ekino_create_movies")
      * @param Request $request
      * @return JsonResponse
+     * @throws \LogicException
      */
     public function createMovie(Request $request)
     {
@@ -63,11 +63,9 @@ class MoviesController extends AbstractController
         $entityManager->persist($movie);
         $entityManager->flush();
 
-        if(!empty($movie)){
-            return new JsonResponse([
-                'error' => "Pomyslnie dodano nowy film."
+        return new JsonResponse([
+                'message' => "Pomyslnie dodano nowy film."
             ]);
-        }
     }
 
     /**
@@ -84,7 +82,7 @@ class MoviesController extends AbstractController
 
         $movie = $movieRepository -> find($id);
 
-        if(empty($movie) || empty($id)){
+        if(empty($movie)){
             return new JsonResponse(['error' => [
                 'code' => 400,
                 'message' => "Nie znaleziono filmu"
@@ -100,7 +98,7 @@ class MoviesController extends AbstractController
      * @Route("/movies/delete/{id}", name="ekino_delete_movies")
      * @param $id
      * @return JsonResponse
-     * @throws \Doctrine\ORM\ORMException
+     * @throws \LogicException
      */
     public function deleteMovie($id)
     {
