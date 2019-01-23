@@ -20,28 +20,31 @@ class LoginController extends AbstractController
      */
     public function login(Request $request)
     {   
+        $err=0;
+        $message='Logowanie się powiodło';
         //echo ("Recive Request content - ".$request->getContent()."\n");
         $userData = json_decode($request->getContent(), true);
         print_r($userData);
         if(!$this->isEmpty($userData['email'],$userData['password']))
         {
-            return new JsonResponse([
-            'error' => 1,
-            'message' => "Nie uzupełniono wszystkich pól"
-            ]);
+            $err=1;
+            $message="Nie uzupełniono wszystkich pól";
         };
-        if(!$this->checkUserInDb($userData['email']))
+        if(!$this->checkUserEmail($userData['email']) && $err==0)
         {
-            return new JsonResponse([
-            'error' => 1,
-            'message' => "Nie odnaleziono użytkownika o podanym loginie"
-            ]);
+            $err=1;
+            $message="Nie prawidłowy adres email";
+        }
+        if(!$this->checkUserInDb($userData['email']) && $err==0)
+        {
+            $err=1;
+            $message="Nie odnaleziono użytkownika o podanym loginie";
         }
         //$this->setSession($userData);
-         return new JsonResponse([
-            'error' => 0,
-            'message' => "Logowanie się powiodło"
-            ]);
+        return new JsonResponse([
+            'error' => $err,
+            'message' => $message
+            ]);  
     }
     /**
      * @Route("/logout", methods={"POST"}, name="ekino_logout")
@@ -71,16 +74,18 @@ class LoginController extends AbstractController
         }
         return true;
     }
+    protected function checkUserEmail($email)
+    {
+        $regex = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,10})$/";
+        $email = strtolower($email);
+        return preg_match($regex, $email);
+    }
     protected function checkUserInDb($email)
     {
         /** @var UserRepository $userRepository */
         $userRepository = $this->getDoctrine()->getRepository(User::class);
         $user = $userRepository->findByEmail($email);
-        if(count($user)>0)
-        {
-            return true;
-        }
-        return false;
+        return count($user);
     }
     /**
      * @Route("/login", methods={"GET"}, name="ekino_login_get")
