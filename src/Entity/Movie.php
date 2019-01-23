@@ -67,4 +67,36 @@ class Movie implements \JsonSerializable
             'date_add' => $this->dateAdd->format('Y-m-d H:i:s'),
         ];
     }
+
+    /**
+     * @param string|null $name
+     */
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param string|null $description
+     */
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @param string|null $age
+     */
+    public function setAge(?string $age): void
+    {
+        $this->age = $age;
+    }
+
+    /**
+     * @param \DateTime|null $dateAdd
+     */
+    public function setDateAdd(?\DateTime $dateAdd): void
+    {
+        $this->dateAdd = $dateAdd;
+    }
 }
