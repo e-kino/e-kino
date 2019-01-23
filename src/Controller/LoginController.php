@@ -18,18 +18,22 @@ class LoginController extends AbstractController
      */
     public function login(Request $request)
     {
-        //var_dump($request);
+        var_dump($request);
         //todo TB git test
         //todo get json from request
         //todo create new session
-         $credentials = [
+        /*
+         *  $credentials = [
+         
             'email' => $request->request->get('login'),
             'password' => $request->request->get('password'),
             
         ];
-        print_r($credentials);
+         * print_r($credentials);
+         */
+        //$request->getContent();
         $data = json_decode($request->getContent(), true);
-        print_r($data);
+        echo $data;
         //$this->setSession($userData);
          return new JsonResponse([
             'message' => "logowanie sie powiodlo"
@@ -88,9 +92,40 @@ class LoginController extends AbstractController
         <form name="myForm" action="http://localhost:8070/login" method="POST">
           Login: <input type="text" name="login"><br>
           Password: <input type="password" name="password"><br>
-          <input type="submit" value="Submit" />
+          
+          <input type="button" value="Submit" onclick="validateForm();" />
         </form></body></html>'
         );
     }
 }
 ?>
+ <script>
+function validateForm() {
+console.log('validateForm');
+
+	var obj = new Object();
+   obj.login = document.forms["myForm"]["login"].value;
+   obj.password  = document.forms["myForm"]["password"].value;
+
+   var jsonString= JSON.stringify(obj);
+	console.log(jsonString);
+	var xhttp = new XMLHttpRequest();
+	
+	
+	xhttp.onreadystatechange = function()
+	{
+		console.log(this.readyState);
+                console.log(this.status);
+		if (this.readyState == 4 && this.status == 200)
+		{
+		   // Action to be performed when the document is read;
+		   console.log('send');
+                   console.log('Response text  - '+xhttp.responseText);
+                   console.log('Response XML  - '+xhttp.responseXML);
+		}
+	};
+        xhttp.open("POST", "http://localhost:8070/login", true);
+         xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhttp.send(jsonString);
+}
+</script>
