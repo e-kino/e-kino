@@ -18,26 +18,24 @@ class LoginController extends AbstractController
      */
     public function login(Request $request)
     {
-        var_dump($request);
-        //todo TB git test
-        //todo get json from request
-        //todo create new session
-        /*
-         *  $credentials = [
-         
-            'email' => $request->request->get('login'),
-            'password' => $request->request->get('password'),
-            
-        ];
-         * print_r($credentials);
-         */
-        //$request->getContent();
-        $data = json_decode($request->getContent(), true);
-        echo $data;
+        
+        echo ("Recive Request content - ".$request->getContent()."\n");
+        //$request->getUser();
+        $userData = json_decode($request->getContent(), true);
+        print_r($userData);
+        if(!$this->isEmpty($userData['login'],$userData['password']))
+        {
+            return new JsonResponse([
+            'error' => 1,
+            'message' => "Nie uzupełniono wszystkich pól"
+            ]);
+        }
         //$this->setSession($userData);
          return new JsonResponse([
-            'message' => "logowanie sie powiodlo"
-        ]);
+            'error' => 0,
+            'message' => "Logowanie się powiodło"
+            ]);
+        
     }
 
     /**
@@ -59,6 +57,16 @@ class LoginController extends AbstractController
         $this->get('session')->set('loginUserId', $userData['id']);
         $this->get('session')->set('loginUserEmail', $userData['email']);
         $this->get('session')->set('loginUserRole', $userData['role']);
+    }
+    protected function isEmpty($login,$pass)
+    {
+        echo "isEMpty\n";
+        if(trim($login)==='' || trim($pass)==='')
+        {
+            echo "nie uzupelniono\n";
+            return false;
+        }
+        return true;
     }
     /**
      * @Route("/login", methods={"GET"}, name="ekino_login_get")
@@ -94,7 +102,7 @@ class LoginController extends AbstractController
           Password: <input type="password" name="password"><br>
           
           <input type="button" value="Submit" onclick="validateForm();" />
-        </form></body></html>'
+        </form></body></html><p id=\'response\'>aa</p>'
         );
     }
 }
@@ -103,6 +111,7 @@ class LoginController extends AbstractController
 function validateForm() {
 console.log('validateForm');
 
+    var responseData;
 	var obj = new Object();
    obj.login = document.forms["myForm"]["login"].value;
    obj.password  = document.forms["myForm"]["password"].value;
@@ -114,14 +123,14 @@ console.log('validateForm');
 	
 	xhttp.onreadystatechange = function()
 	{
-		console.log(this.readyState);
-                console.log(this.status);
+		//console.log(this.readyState);
+                //console.log(this.status);
 		if (this.readyState == 4 && this.status == 200)
 		{
-		   // Action to be performed when the document is read;
-		   console.log('send');
-                   console.log('Response text  - '+xhttp.responseText);
-                   console.log('Response XML  - '+xhttp.responseXML);
+                   responseData=xhttp.responseText
+                   console.log('---Response text  ---');
+                   console.log(responseData);
+                   document.getElementById('response').innerText='ok';
 		}
 	};
         xhttp.open("POST", "http://localhost:8070/login", true);
