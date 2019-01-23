@@ -7,6 +7,7 @@ use App\Repository\MovieRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MoviesController extends AbstractController
@@ -33,11 +34,40 @@ class MoviesController extends AbstractController
 
     /**
      * @Route("/movies", methods={"POST"}, name="ekino_create_movies")
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function createMovie()
+    public function createMovie(Request $request)
     {
-        //todo DW
-        //todo
+        $movie = new Movie();
+        $name = $request -> get('name');
+        $description = $request -> get('description');
+        $age = $request -> get('age');
+        $dateAdd = $request ->get('date_add');
+
+        if(empty($name) || empty($description) ||
+           empty($age) || empty($dateAdd))
+        {
+            return new JsonResponse([
+                'error' => "Podano puste pole dla filmu."
+            ], 400);
+        }
+
+        $movie->setName($name);
+        $movie->setDescription($description);
+        $movie->setAge($age);
+        $movie->setDateAdd($dateAdd);
+
+        $entityManager = $this -> getDoctrine()
+                                -> getManager();
+        $entityManager->persist($movie);
+        $entityManager->flush();
+
+        if(!empty($movie)){
+            return new JsonResponse([
+                'error' => "Pomyslnie dodano nowy film."
+            ]);
+        }
     }
 
     /**
@@ -50,7 +80,7 @@ class MoviesController extends AbstractController
     {
         /** @var MovieRepository $movieRepository */
         $movieRepository = $this->getDoctrine()
-            ->getRepository(Movie::class);
+                                ->getRepository(Movie::class);
 
         $movie = $movieRepository -> find($id);
 
@@ -76,7 +106,7 @@ class MoviesController extends AbstractController
     {
         /** @var MovieRepository $movieRepository */
         $movieRepository = $this->getDoctrine()
-            ->getRepository(Movie::class);
+                                ->getRepository(Movie::class);
 
         $movie = $movieRepository -> find($id);
 
@@ -89,7 +119,7 @@ class MoviesController extends AbstractController
             $entityManager -> flush();
         }
         catch (\Exception $exception){
-            return new JsonResponse(['error' =>  "Nie mozna usunac podanego filmu." + $exception],
+            return new JsonResponse(['error' =>  "Nie mozna usunac podanego filmu.".$exception],
                 400);
         }
 
@@ -107,7 +137,7 @@ class MoviesController extends AbstractController
     {
         /** @var MovieRepository $movieRepository */
         $movieRepository = $this->getDoctrine()
-            ->getRepository(Movie::class);
+                                ->getRepository(Movie::class);
 
         $movies = $movieRepository->findAll();
 
