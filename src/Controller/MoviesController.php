@@ -22,7 +22,7 @@ class MoviesController extends AbstractController
     {
         /** @var MovieRepository $movieRepository */
         $movieRepository = $this->getDoctrine()
-                                ->getRepository(Movie::class);
+            ->getRepository(Movie::class);
 
         $movieForAGivenName = $movieRepository->findByName($name);
 
@@ -40,14 +40,13 @@ class MoviesController extends AbstractController
     public function createMovie(Request $request)
     {
         $movie = new Movie();
-        $name = $request -> get('name');
-        $description = $request -> get('description');
-        $age = $request -> get('age');
-        $dateAdd = $request ->get('date_add');
+        $name = $request->get('name');
+        $description = $request->get('description');
+        $age = $request->get('age');
+        $dateAdd = $request->get('date_add');
 
-        if(empty($name) || empty($description) ||
-           empty($age) || empty($dateAdd))
-        {
+        if (empty($name) || empty($description) ||
+            empty($age) || empty($dateAdd)) {
             return new JsonResponse([
                 'error' => "Podano puste pole dla filmu."
             ], 400);
@@ -58,14 +57,14 @@ class MoviesController extends AbstractController
         $movie->setAge($age);
         $movie->setDateAdd($dateAdd);
 
-        $entityManager = $this -> getDoctrine()
-                                -> getManager();
+        $entityManager = $this->getDoctrine()
+            ->getManager();
         $entityManager->persist($movie);
         $entityManager->flush();
 
         return new JsonResponse([
-                'message' => "Pomyslnie dodano nowy film."
-            ]);
+            'message' => "Pomyslnie dodano nowy film."
+        ]);
     }
 
     /**
@@ -78,15 +77,17 @@ class MoviesController extends AbstractController
     {
         /** @var MovieRepository $movieRepository */
         $movieRepository = $this->getDoctrine()
-                                ->getRepository(Movie::class);
+            ->getRepository(Movie::class);
 
-        $movie = $movieRepository -> find($id);
+        $movie = $movieRepository->find($id);
 
-        if(empty($movie)){
-            return new JsonResponse(['error' => [
-                'code' => 400,
-                'message' => "Nie znaleziono filmu"
-            ]]);
+        if (empty($movie)) {
+            return new JsonResponse([
+                'error' => [
+                    'code' => 400,
+                    'message' => "Nie znaleziono filmu"
+                ]
+            ]);
         }
 
         return new JsonResponse([
@@ -104,20 +105,19 @@ class MoviesController extends AbstractController
     {
         /** @var MovieRepository $movieRepository */
         $movieRepository = $this->getDoctrine()
-                                ->getRepository(Movie::class);
+            ->getRepository(Movie::class);
 
-        $movie = $movieRepository -> find($id);
+        $movie = $movieRepository->find($id);
 
-        $entityManager = $this -> getDoctrine()
-                               -> getManager();
+        $entityManager = $this->getDoctrine()
+            ->getManager();
 
-        try{
-            $entityManager -> remove($movie);
+        try {
+            $entityManager->remove($movie);
 
-            $entityManager -> flush();
-        }
-        catch (\Exception $exception){
-            return new JsonResponse(['error' =>  "Nie mozna usunac podanego filmu.".$exception],
+            $entityManager->flush();
+        } catch (\Exception $exception) {
+            return new JsonResponse(['error' => "Nie mozna usunac podanego filmu." . $exception],
                 400);
         }
 
@@ -135,15 +135,17 @@ class MoviesController extends AbstractController
     {
         /** @var MovieRepository $movieRepository */
         $movieRepository = $this->getDoctrine()
-                                ->getRepository(Movie::class);
+            ->getRepository(Movie::class);
 
         $movies = $movieRepository->findAll();
 
         if (empty($movies)) {
-            return new JsonResponse(['error' => [
-                'code' => 400,
-                'message' => "Nie znaleziono filmow"
-            ]]);
+            return new JsonResponse([
+                'error' => [
+                    'code' => 400,
+                    'message' => "Nie znaleziono filmow"
+                ]
+            ]);
         }
 
         return new JsonResponse([
