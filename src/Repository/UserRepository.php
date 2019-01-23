@@ -23,8 +23,8 @@ class UserRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('user')
                     ->select('user')
-                    ->andWhere('user.role_id == :userRole')
-                    ->andWhere("user.active == '1'")
+                    ->andWhere('user.role_id = :userRole')
+                    ->andWhere("user.active = '1'")
                     ->setParameter('userRole', $userRoleId)
                     ->getQuery();
 
@@ -42,7 +42,7 @@ class UserRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('user')
                     ->select('user')
-                    ->Where('user.email == :email')
+                    ->Where('user.email = :email')
                     ->setParameter('email', $userEmail)
                     ->getQuery();
 
@@ -60,8 +60,8 @@ class UserRepository extends ServiceEntityRepository
     {
          $qb = $this->createQueryBuilder('user')
                     ->select('user')
-                    ->andWhere('user.email == :email')
-                    ->andWhere('user.password == :pass')
+                    ->andWhere('user.email = :email')
+                    ->andWhere('user.password = :pass')
                     ->setParameter('email', $userEmail)
                     ->setParameter('pass', $userPass)
                     ->getQuery();

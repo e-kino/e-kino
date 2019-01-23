@@ -30,14 +30,14 @@ class LoginController extends AbstractController
             $message = "Nie uzupełniono wszystkich pól";
         };
         if ($err === 0) {
-            echo "check email\n";
+//            echo "check email\n";
             if (!$this->checkUserEmail($userData['email'])) {
                 $err = 1;
                 $message = "Nie prawidłowy adres email";
             }
         }
         if ($err === 0) {
-            echo "check in db\n";
+//            echo "check in db\n";
             if (!$this->checkUserInDb($userData['email'], $userData['password'])) {
                 $err = 1;
                 $message = "Nie prawidłowe dane logowania";
@@ -74,13 +74,13 @@ class LoginController extends AbstractController
         //echo 'Encoded password - '.$encodedPass."\n";
         $user = $userRepository->findByEmail($email);
         #$user = $userRepository->findByEmailPass($email,$encodedPass);
-        return count($user);
+        return !is_null($user);
     }
 
     protected function generateUserPassword($user, $pass)
     {
         $passToEncode = $user . $pass;
-        echo $passToEncode;
+//        echo $passToEncode;
         return (sha1(md5($passToEncode)));
     }
 
