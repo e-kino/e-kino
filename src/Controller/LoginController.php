@@ -28,4 +28,8 @@ class LoginController extends AbstractController
         //todo TB
         //todo destroy session
     }
+    protected function setSession($userData)
+    {
+        // SET SESSION 
+    }
 }
