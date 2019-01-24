@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
 
 class RegisterController extends AbstractController
 {
@@ -41,6 +43,18 @@ class RegisterController extends AbstractController
             if (!$this->checkUserEmail($userData['email'])) {
                 $err = 1;
                 $message = "Nie prawidłowy adres email";
+            }
+        }
+        if ($err === 0) {
+            if (!$this->getUserByEmail($userData['email'])) {
+                $err = 1;
+                $message = "Użytkownik o podanym adresie email już istnieje";
+            }
+        }
+        if ($err === 0) {
+            if (!$this->addUserToDb($userData['email'],$userData['password'])) {
+                $err = 1;
+                $message = "Nie udało się załozyć konta. Powiadom administratora.";
             }
         }
         return new JsonResponse([
@@ -82,6 +96,38 @@ class RegisterController extends AbstractController
         $regex = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,10})$/";
         $email = strtolower($email);
         return preg_match($regex, $email);
+    }
+    protected function getUserByEmail($email)
+    {
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->getDoctrine()
+                                ->getRepository(User::class);
+
+        $user = $userRepository->findByEmail($email);
+        return is_null($user);
+    }
+    protected function addUserToDb($email,$pass)
+    {
+        $passEncode = password_hash($pass, PASSWORD_BCRYPT);
+        $entityManager = $this->getDoctrine()->getManager();
+        $date=new \DateTime("now");
+        try{
+            $user = new User();
+            #print_r($user);
+            $user->setEmail($email);
+            $user->setPassword($passEncode);
+            $user->setRoleId(1);
+            $user->setDateAdd($date);
+            $entityManager->persist($user);
+  
+            $entityManager->flush();
+        }
+        catch (\Doctrine\ORM\EntityNotFoundException $exception)
+        {
+            #echo($exception->getMessage());
+            return false;
+        }
+        return true;
     }
     /**
      * @Route("/registerpage", methods={"GET"}, name="ekino_registerpage")
