@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@mdi/font": "^3.3.92",
+    "axios": "^0.18.0",
     "buefy": "^0.7.2",
+    "moment": "^2.24.0",
     "vue": "^2.5.21",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
