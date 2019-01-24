@@ -70,18 +70,17 @@ class MoviesController extends AbstractController
         /** @var MovieRepository $movieRepository */
         $movieRepository = $this->getDoctrine()
                                 ->getRepository(Movie::class);
+
         $movie = $movieRepository->find($id);
-        print_r($movie);
-        var_dump($movie);
         $entityManager = $this->getDoctrine()
-            ->getManager();
+                                ->getManager();
 
         try {
             $entityManager->remove($movie);
 
             $entityManager->flush();
         } catch (\Exception $exception) {
-            return new JsonResponse(['error' => "Nie mozna usunac podanego filmu." . $exception],
+            return new JsonResponse(['error' => "Nie mozna usunac podanego filmu.".$exception],
                 400);
         }
 
@@ -99,17 +98,14 @@ class MoviesController extends AbstractController
     {
         /** @var MovieRepository $movieRepository */
         $movieRepository = $this->getDoctrine()
-            ->getRepository(Movie::class);
+                                ->getRepository(Movie::class);
 
         $movies = $movieRepository->findAll();
 
         if (empty($movies)) {
             return new JsonResponse([
-                'error' => [
-                    'code' => 400,
-                    'message' => "Nie znaleziono filmow"
-                ]
-            ]);
+                'error' =>  "Nie znaleziono filmow"
+                ], 400);
         }
 
         return new JsonResponse([
