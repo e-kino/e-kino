@@ -42,7 +42,7 @@ class RegisterController extends AbstractController
          if ($err === 0) {
             if (!$this->checkUserEmail($userData['email'])) {
                 $err = 1;
-                $message = "Nie prawidłowy adres email";
+                $message = "Nieprawidłowy adres email";
             }
         }
         if ($err === 0) {
