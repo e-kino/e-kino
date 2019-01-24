@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Movie;
 use App\Repository\MovieRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,19 +13,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class MoviesController extends AbstractController
 {
     /**
-     * @Route("/movies/{name}", name="ekino_get_movies_by_name")
+     * @Route("/movies/name/{name}", methods={"GET"}, name="ekino_get_movies_by_name")
      * @param $name
      * @return JsonResponse
-     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \LogicException
      */
     public function getByName($name)
     {
-        /** @var MovieRepository $movieRepository */
         $movieRepository = $this->getDoctrine()
-            ->getRepository(Movie::class);
+                                ->getRepository(Movie::class);
 
         $movieForAGivenName = $movieRepository->findByName($name);
+
+        if (is_null($movieForAGivenName)) {
+            return new JsonResponse([
+                'error' =>  "Nie znaleziono filmu"
+            ],400);
+        }
 
         return new JsonResponse([
             'movies' => $movieForAGivenName
@@ -32,71 +37,30 @@ class MoviesController extends AbstractController
     }
 
     /**
-     * @Route("/movies", methods={"POST"}, name="ekino_create_movies")
-     * @param Request $request
-     * @return JsonResponse
-     * @throws \LogicException
-     */
-    public function createMovie(Request $request)
-    {
-        $movie = new Movie();
-        $name = $request->get('name');
-        $description = $request->get('description');
-        $age = $request->get('age');
-        $dateAdd = $request->get('date_add');
-
-        if (empty($name) || empty($description) ||
-            empty($age) || empty($dateAdd)) {
-            return new JsonResponse([
-                'error' => "Podano puste pole dla filmu."
-            ], 400);
-        }
-
-        $movie->setName($name);
-        $movie->setDescription($description);
-        $movie->setAge($age);
-        $movie->setDateAdd($dateAdd);
-
-        $entityManager = $this->getDoctrine()
-            ->getManager();
-        $entityManager->persist($movie);
-        $entityManager->flush();
-
-        return new JsonResponse([
-            'message' => "Pomyslnie dodano nowy film."
-        ]);
-    }
-
-    /**
-     * @Route("/movies/{$id}", name="ekino_get_a_movie_by_id")
+     * @Route("/movies/{id}", methods={"GET"}, name="ekino_get_movies_by_id")
      * @param $id
      * @return JsonResponse
      * @throws \LogicException
      */
-    public function getMovieById($id)
+    public function getById($id)
     {
-        /** @var MovieRepository $movieRepository */
-        $movieRepository = $this->getDoctrine()
-            ->getRepository(Movie::class);
+        $movie = $this->getDoctrine()
+                        ->getRepository(Movie::class)
+                        ->find($id);
 
-        $movie = $movieRepository->find($id);
-
-        if (empty($movie)) {
+        if (!$movie) {
             return new JsonResponse([
-                'error' => [
-                    'code' => 400,
-                    'message' => "Nie znaleziono filmu"
-                ]
-            ]);
+                'error' =>  "Nie znaleziono filmu"
+            ],400);
         }
 
         return new JsonResponse([
-            'movie' => $movie
+            'movies' => $movie
         ]);
     }
 
     /**
-     * @Route("/movies/delete/{id}", name="ekino_delete_movies")
+     * @Route("/movies/{id}", methods={"DELETE"}, name="ekino_delete_movies")
      * @param $id
      * @return JsonResponse
      * @throws \LogicException
@@ -105,19 +69,18 @@ class MoviesController extends AbstractController
     {
         /** @var MovieRepository $movieRepository */
         $movieRepository = $this->getDoctrine()
-            ->getRepository(Movie::class);
+                                ->getRepository(Movie::class);
 
         $movie = $movieRepository->find($id);
-
         $entityManager = $this->getDoctrine()
-            ->getManager();
+                                ->getManager();
 
         try {
             $entityManager->remove($movie);
 
             $entityManager->flush();
         } catch (\Exception $exception) {
-            return new JsonResponse(['error' => "Nie mozna usunac podanego filmu." . $exception],
+            return new JsonResponse(['error' => "Nie mozna usunac podanego filmu.".$exception],
                 400);
         }
 
@@ -135,21 +98,50 @@ class MoviesController extends AbstractController
     {
         /** @var MovieRepository $movieRepository */
         $movieRepository = $this->getDoctrine()
-            ->getRepository(Movie::class);
+                                ->getRepository(Movie::class);
 
         $movies = $movieRepository->findAll();
 
         if (empty($movies)) {
             return new JsonResponse([
-                'error' => [
-                    'code' => 400,
-                    'message' => "Nie znaleziono filmow"
-                ]
-            ]);
+                'error' =>  "Nie znaleziono filmow"
+                ], 400);
         }
 
         return new JsonResponse([
             'movies' => $movies
+        ]);
+    }
+
+    /**
+     * @Route("/movies/add", methods={"POST"}, name="ekino_create_movies")
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function createMovie(Request $request)
+    {
+        $movie = new Movie();
+        $post = json_decode($request->getContent(), true);
+        $name = $post['name'];
+        $description = $post['description'];
+        $age = $post['age'];
+        $dateAdd = $post['date_add'];
+
+        $movie->setDateAdd(new DateTime($dateAdd));
+        $movie->setAge($age);
+        $movie->setDescription($description);
+        $movie->setName($name);
+
+        $entityManager = $this->getDoctrine()
+                                ->getManager();
+
+        $entityManager->persist($movie);
+
+        $entityManager->flush();
+
+        return new JsonResponse([
+            'message' => "Pomyslnie dodano nowy film."
         ]);
     }
 }
