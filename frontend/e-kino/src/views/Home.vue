@@ -40,6 +40,7 @@
   import Screening from '@/components/Screening'
   import axios from 'axios'
   import moment from 'moment'
+  import {mapActions} from 'vuex'
 
   export default {
     name: 'home',
@@ -56,12 +57,16 @@
       this.fetchShowings()
     },
     methods: {
+      ...mapActions([
+        'setShowings'
+      ]),
       fetchShowings() {
         let formattedDate = moment(this.date).format('YYYY-MM-DD');
 
         axios.get(`/showings/${formattedDate}`)
           .then((r) => {
             this.showings = r.data.showings
+            this.setShowings(r.data.showings)
           })
       }
     }
