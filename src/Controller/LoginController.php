@@ -24,9 +24,7 @@ class LoginController extends AbstractController
     {
         $err = 0;
         $message = 'Logowanie się powiodło';
-        //echo ("Recive Request content - ".$request->getContent()."\n");
         $userData = json_decode($request->getContent(), true);
-        //print_r($userData);
         if (!$this->validFields($userData)){
             $err = 1;
             $message = "Przekazano nieprawidłowe pola z formularza.";
@@ -38,17 +36,15 @@ class LoginController extends AbstractController
             };
         }
         if ($err === 0) {
-//            echo "check email\n";
             if (!$this->checkUserEmail($userData['email'])) {
                 $err = 1;
-                $message = "Nie prawidłowy adres email";
+                $message = "Nieprawidłowy adres email";
             }
         }
         if ($err === 0) {
-//            echo "check in db\n";
             if (!$this->checkUserInDb($userData['email'], $userData['password'])) {
                 $err = 1;
-                $message = "Nie prawidłowe dane logowania";
+                $message = "Nieprawidłowe dane logowania";
             }
         }
         $this->setSession($userData['email']);
@@ -108,7 +104,7 @@ class LoginController extends AbstractController
         session_destroy();
 
         return new JsonResponse([
-            'message' => "Wylogowanie się powidło"
+            'message' => "Wylogowanie się powiodło"
         ]);
     }
 
