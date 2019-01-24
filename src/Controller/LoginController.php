@@ -12,6 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LoginController extends AbstractController
 {
+    const email='email';
+    const password='password';
     /**
      * @Route("/login", methods={"POST"}, name="ekino_login")
      * @param Request $request
@@ -22,25 +24,27 @@ class LoginController extends AbstractController
     {
         $err = 0;
         $message = 'Logowanie się powiodło';
-        //echo ("Recive Request content - ".$request->getContent()."\n");
         $userData = json_decode($request->getContent(), true);
-        //print_r($userData);
-        if (!$this->isEmpty($userData['email'], $userData['password'])) {
+        if (!$this->validFields($userData)){
             $err = 1;
-            $message = "Nie uzupełniono wszystkich pól";
+            $message = "Przekazano nieprawidłowe pola z formularza.";
         };
+        if ($err === 0){
+            if (!$this->isEmpty($userData['email'], $userData['password'])) {
+                $err = 1;
+                $message = "Nie uzupełniono wszystkich pól";
+            };
+        }
         if ($err === 0) {
-//            echo "check email\n";
             if (!$this->checkUserEmail($userData['email'])) {
                 $err = 1;
-                $message = "Nie prawidłowy adres email";
+                $message = "Nieprawidłowy adres email";
             }
         }
         if ($err === 0) {
-//            echo "check in db\n";
             if (!$this->checkUserInDb($userData['email'], $userData['password'])) {
                 $err = 1;
-                $message = "Nie prawidłowe dane logowania";
+                $message = "Nieprawidłowe dane logowania";
             }
         }
         $this->setSession($userData['email']);
@@ -49,7 +53,13 @@ class LoginController extends AbstractController
             'message' => $message
         ]);
     }
-
+    protected function validFields($userData)
+    {
+        if(!array_key_exists(self::email,$userData) || !array_key_exists(self::password,$userData)){
+            return false;
+        }
+        return true;
+    }
     protected function isEmpty($email, $pass)
     {
         if (trim($email) === '' || trim($pass) === '') {
@@ -94,7 +104,7 @@ class LoginController extends AbstractController
         session_destroy();
 
         return new JsonResponse([
-            'message' => "Wylogowanie się powidło"
+            'message' => "Wylogowanie się powiodło"
         ]);
     }
 

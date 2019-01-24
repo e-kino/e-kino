@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -66,6 +68,7 @@ class Showing implements \JsonSerializable
             'dateAdd' => $this->dateAdd->format('Y-m-d H:i:s'),
             'timeShow' => $this->timeShow->format('H:i'),
             'movie' => $this->movie,
+            'programme' => $this->programme
         ];
     }
 
@@ -75,5 +78,45 @@ class Showing implements \JsonSerializable
     public function getMovie(): Movie
     {
         return $this->movie;
+    }
+
+    /**
+     * @return Programme
+     */
+    public function getProgramme(): Programme
+    {
+        return $this->programme;
+    }
+
+    /**
+     * @param \DateTime|null $dateAdd
+     */
+    public function setDateAdd(?\DateTime $dateAdd): void
+    {
+        $this->dateAdd = $dateAdd->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * @param \DateTime|null $timeShow
+     */
+    public function setTimeShow(?\DateTime $timeShow): void
+    {
+        $this->timeShow = $timeShow->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * @param Movie $movie
+     */
+    public function setMovie(Movie $movie): void
+    {
+        $this->movie = $movie;
+    }
+
+    /**
+     * @param Programme $programme
+     */
+    public function setProgramme(Programme $programme): void
+    {
+        $this->programme = $programme;
     }
 }

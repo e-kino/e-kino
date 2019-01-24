@@ -75,7 +75,30 @@ class User implements \JsonSerializable
             'active' => $this->active,
         ];
     }
-
+    public function setRoleId($roleid)
+    {
+        $this->roleId=$roleid;
+    }
+    public function setEmail($email)
+    {
+        $this->email=$email;
+    }
+    public function setPassword($password)
+    {
+        $this->password=$password;
+    }
+    public function setDateAdd($dateAdd)
+    {
+        $this->dateAdd=$dateAdd;
+    }
+    public function getEmail()
+    {
+        return $this->email;
+    }
+    public function getDateAdd()
+    {
+        return $this->dateAdd;
+    }
     /**
      * @return null|string
      */
