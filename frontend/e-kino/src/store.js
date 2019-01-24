@@ -5,12 +5,16 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-
+    showings: []
   },
   mutations: {
-
+    SET_SHOWINGS(state, showings) {
+      Vue.set(state, 'showings', showings)
+    }
   },
   actions: {
-
+    setShowings({commit}, showings) {
+      commit('SET_SHOWINGS', showings)
+    }
   },
 });

@@ -19,7 +19,7 @@
         {{showing.movie.name}}
       </div>
       <footer class="card-footer">
-        <router-link to="/booking/100" class="card-footer-item">
+        <router-link :to="`/booking/${showing.id}`" class="card-footer-item">
           Rezerwuj
         </router-link>
       </footer>
