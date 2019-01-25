@@ -40,8 +40,6 @@ class Showing implements \JsonSerializable
     /**
      * @var Movie
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\OneToOne(targetEntity="Movie")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="movie_id", referencedColumnName="id")
@@ -52,8 +50,6 @@ class Showing implements \JsonSerializable
     /**
      * @var Programme
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\OneToOne(targetEntity="Programme")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="programme_id", referencedColumnName="id")

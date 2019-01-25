@@ -17,7 +17,7 @@ class Booking
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -52,9 +52,7 @@ class Booking
     /**
      * @var Showing
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="Showing")
+     * @ORM\ManyToOne(targetEntity="Showing")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="showing_id", referencedColumnName="id")
      * })
@@ -64,8 +62,6 @@ class Booking
     /**
      * @var User
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\OneToOne(targetEntity="User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
