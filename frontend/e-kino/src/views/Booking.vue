@@ -111,6 +111,11 @@
     },
     methods: {
       toggleSeat(seat) {
+        if (this.isTaken(seat)) {
+          this.$snackbar.open('Wybrane miejsce jest zajęte');
+          return
+        }
+
         let indexOf = this.selectedSeats.indexOf(seat);
 
         if (indexOf > -1) {
