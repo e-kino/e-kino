@@ -36,9 +36,9 @@ class Booking
     private $dateBooking;
 
     /**
-     * @var bool|null
+     * @var int
      *
-     * @ORM\Column(name="seat_number", type="boolean", nullable=true)
+     * @ORM\Column(name="seat_number", type="integer", nullable=false)
      */
     private $seatNumber;
 
@@ -68,6 +68,14 @@ class Booking
      * })
      */
     private $user;
+
+    /**
+     * @return int
+     */
+    public function getSeatNumber(): int
+    {
+        return $this->seatNumber;
+    }
 
 
 }

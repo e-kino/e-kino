@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Booking;
 use App\Entity\Movie;
 use App\Entity\Programme;
 use App\Entity\Showing;
 use App\Repository\MovieRepository;
 use App\Repository\ProgrammeRepository;
+use Phalcon\Cache\Frontend\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -82,6 +84,7 @@ class ShowingsController extends AbstractController
      * @Route("/showings/{id}", methods={"DELETE"}, name="ekino_delete_showing")
      * @param $id
      * @return JsonResponse
+     * @throws \LogicException
      */
     public function deleteShowing($id)
     {
@@ -104,6 +107,30 @@ class ShowingsController extends AbstractController
 
         return new JsonResponse([
             'message' => "Pomyslnie usunieto spektakl o podanym ID"
+        ]);
+    }
+
+    /**
+     * @Route("/showings/seats/taken/{id}", name="ekino_get_taklen_showing_seats")
+     * @param $id
+     * @return JsonResponse
+     * @throws \LogicException
+     */
+    public function getTakenSeatsById($id)
+    {
+        $bookings = $this->getDoctrine()
+            ->getRepository(Booking::class)
+            ->findByShowing($id);
+
+        $takenSeats = [];
+
+        /** @var Booking $booking */
+        foreach ($bookings as $booking) {
+            $takenSeats[] = $booking->getSeatNumber();
+        }
+
+        return new JsonResponse([
+            'takenSeats' => $takenSeats
         ]);
     }
 }
