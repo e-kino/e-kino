@@ -83,13 +83,35 @@
             </router-link>
           </div>
           <div class="card-footer-item">
-            <a class="is-primary is-large button">
+            <a class="is-primary is-large button" @click="confirmBooking">
               Potwierdź rezerwację
             </a>
           </div>
         </footer>
       </div>
     </section>
+
+    <b-modal :active.sync="confirmModal" has-modal-card>
+      <div class="modal-card" style="width: auto">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Potwierdzenie rezerwacji</p>
+        </header>
+        <section class="modal-card-body">
+          <div style="font-size: 23pt; margin-bottom: 20px">
+            {{currentShowing.movie.name}} {{currentShowing.timeShow}}
+          </div>
+
+          <div v-for="booking in bookings">
+            <strong>Rezerwacja nr {{booking.id}}:</strong> <span class="is-pulled-right">miejsce {{booking.seatNumber}}</span>
+          </div>
+
+
+        </section>
+        <footer class="modal-card-foot" style="justify-content: space-between">
+          <button class="button" type="button" @click="confirmModal = false">Zamknij</button>
+        </footer>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -103,7 +125,9 @@
       return {
         selectedSeats: [],
         takenSeats: [],
-        seatStart: 1
+        seatStart: 1,
+        confirmModal: false,
+        bookings: []
       }
     },
     mounted() {
@@ -125,7 +149,7 @@
         }
       },
       fetchTakenSeats() {
-        axios.get(`/showings/seats/taken/${this.$route.params.showingId}`)
+        return axios.get(`/showings/seats/taken/${this.$route.params.showingId}`)
           .then((r) => {
             this.takenSeats = r.data.takenSeats;
           })
@@ -135,6 +159,26 @@
       },
       isTaken(seat) {
         return this.takenSeats.indexOf(seat) !== -1
+      },
+      confirmBooking() {
+        if (!this.selectedSeats.length) {
+          this.$snackbar.open(`Musisz wybrać przynajmniej jedno miejsce.`);
+          return;
+        }
+
+        axios.post('/bookings', {
+          seats: this.selectedSeats,
+          showingId: this.$route.params.showingId,
+          userId: null
+        })
+          .then((r) => {
+            this.bookings = r.data.bookings;
+            this.confirmModal = true;
+            this.fetchTakenSeats().then(() => {
+              this.selectedSeats = [];
+            });
+          })
+
       }
     },
     computed: {
