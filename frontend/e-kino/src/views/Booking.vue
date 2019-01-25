@@ -112,7 +112,7 @@
     methods: {
       toggleSeat(seat) {
         if (this.isTaken(seat)) {
-          this.$snackbar.open('Wybrane miejsce jest zajęte');
+          this.$snackbar.open(`Miejsce ${seat} jest zajęte.`);
           return
         }
 
