@@ -56,7 +56,11 @@
             </div>
             <div v-for="x in 6" class="columns">
               <div v-for="y in 10" class="column">
-                <p class="bd-notification is-primary hoverable" :class="{'is-taken': y===2}" @click=toggleSeat(y*x)>{{ y * x }}</p>
+                <p class="bd-notification is-primary hoverable"
+                   :x="x"
+                   :class="{'is-taken': y===2, 'is-selected': isSelected(x*10+y-10)}" @click=toggleSeat(x*10+y-10)>
+                  {{ x*10+y-10 }}
+                </p>
               </div>
             </div>
 
@@ -73,7 +77,15 @@
           </div>
         </div>
         <footer class="card-footer">
-          <a href="#" class="card-footer-item">Potwierdź rezerwację</a>
+          <div class="card-footer-item">
+            <router-link to="/" class="is-large button">
+              Wróć do wyszukiwarki
+            </router-link>
+          </div><div class="card-footer-item">
+            <a class="is-primary is-large button">
+              Potwierdź rezerwację
+            </a>
+          </div>
         </footer>
       </div>
     </section>
@@ -87,7 +99,8 @@
     name: "Booking",
     data() {
       return {
-        selectedSeat: null
+        selectedSeats: [],
+        seatStart: 1
       }
     },
     mounted() {
@@ -95,11 +108,21 @@
     },
     methods: {
       toggleSeat(seat) {
-        if (this.selectedSeat === seat) {
-          this.selectedSeat = null;
+        let indexOf = this.selectedSeats.indexOf(seat);
+
+        if (indexOf > -1) {
+          this.selectedSeats.splice(indexOf, 1);
         } else {
-          this.selectedSeat = seat;
+          this.selectedSeats.push(seat);
         }
+      },
+      isSelected(seat) {
+        return this.selectedSeats.indexOf(seat) !== -1
+      },
+      getSeatNumber() {
+        this.seatStart += 1;
+
+        return this.seatStart
       }
     },
     computed: {
@@ -129,16 +152,24 @@
     background-color: #f57267 !important;
   }
 
+  .bd-notification.hoverable.is-selected:hover {
+    background-color: red !important;
+  }
+
+
   .bd-notification.is-taken:hover {
     background-color: #929292 !important;
+  }
 
+  .bd-notification.is-selected {
+    background-color: #f57267 !important;
   }
 
   .bd-notification.is-primary {
     background-color: #00d1b2;
     color: #fff;
   }
-  
+
   .bd-notification.is-taken {
     background-color: #cfcfcf;
     color: #fff;
