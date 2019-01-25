@@ -58,7 +58,7 @@
               <div v-for="y in 10" class="column">
                 <p class="bd-notification is-primary hoverable"
                    :x="x"
-                   :class="{'is-taken': y===2, 'is-selected': isSelected(x*10+y-10)}" @click=toggleSeat(x*10+y-10)>
+                   :class="{'is-taken': isTaken(x*10+y-10), 'is-selected': isSelected(x*10+y-10)}" @click=toggleSeat(x*10+y-10)>
                   {{ x*10+y-10 }}
                 </p>
               </div>
@@ -81,7 +81,8 @@
             <router-link to="/" class="is-large button">
               Wróć do wyszukiwarki
             </router-link>
-          </div><div class="card-footer-item">
+          </div>
+          <div class="card-footer-item">
             <a class="is-primary is-large button">
               Potwierdź rezerwację
             </a>
@@ -94,17 +95,19 @@
 
 <script>
   import {mapState} from 'vuex'
+  import axios from 'axios'
 
   export default {
     name: "Booking",
     data() {
       return {
         selectedSeats: [],
+        takenSeats: [],
         seatStart: 1
       }
     },
     mounted() {
-
+      this.fetchTakenSeats()
     },
     methods: {
       toggleSeat(seat) {
@@ -116,13 +119,17 @@
           this.selectedSeats.push(seat);
         }
       },
+      fetchTakenSeats() {
+        axios.get(`/showings/seats/taken/${this.$route.params.showingId}`)
+          .then((r) => {
+            this.takenSeats = r.data.takenSeats;
+          })
+      },
       isSelected(seat) {
         return this.selectedSeats.indexOf(seat) !== -1
       },
-      getSeatNumber() {
-        this.seatStart += 1;
-
-        return this.seatStart
+      isTaken(seat) {
+        return this.takenSeats.indexOf(seat) !== -1
       }
     },
     computed: {
@@ -155,7 +162,6 @@
   .bd-notification.hoverable.is-selected:hover {
     background-color: red !important;
   }
-
 
   .bd-notification.is-taken:hover {
     background-color: #929292 !important;
