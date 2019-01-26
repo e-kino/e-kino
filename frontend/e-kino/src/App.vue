@@ -17,7 +17,7 @@
 
             <div v-if="isLoggedIn" class="navbar-item has-dropdown is-hoverable"><a class="navbar-link">Konto</a>
               <div class="navbar-dropdown"><a class="navbar-item">Dashboard</a>
-                <a class="navbar-item">Rezerwacje</a>
+                <router-link to="/my-bookings" class="navbar-item">Rezerwacje</router-link>
                 <hr class="navbar-divider"/>
                 <a class="navbar-item" @click="logout">Wyloguj się</a>
               </div>

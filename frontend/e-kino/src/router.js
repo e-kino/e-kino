@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Booking from './views/Booking.vue';
+import MyBookings from './views/MyBookings.vue';
 
 Vue.use(Router);
 
@@ -18,6 +19,11 @@ export default new Router({
       path: '/booking/:showingId',
       name: 'booking',
       component: Booking
+    },
+    {
+      path: '/my-bookings',
+      name: 'myBookings',
+      component: MyBookings
     },
     {
       path: '/about',

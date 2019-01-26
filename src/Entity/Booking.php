@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Booking
  *
  * @ORM\Table(name="booking", indexes={@ORM\Index(name="fk_booking_showing1_idx", columns={"showing_id"}), @ORM\Index(name="fk_booking_user1_idx", columns={"user_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\BookingRepository")
  */
 class Booking implements \JsonSerializable
 {
@@ -193,7 +193,12 @@ class Booking implements \JsonSerializable
     {
         return [
             'id' => $this->getId(),
-            'seatNumber' => $this->getSeatNumber()
+            'seatNumber' => $this->getSeatNumber(),
+            'dateAdd' => $this->getDateAdd(),
+            'dateBooking' => $this->getDateBooking()->format('Y-m-d H:i'),
+            'user' => $this->getUser(),
+            'status' => $this->getStatus(),
+            'showing' => $this->getShowing()
         ];
     }
 }

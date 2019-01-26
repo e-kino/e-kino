@@ -70,12 +70,32 @@ class BookingsController extends AbstractController
     }
 
     /**
-     * @Route("/bookings/user/{userId}", methods={"POST"}, name="ekino_get_user_bookings")
+     * @Route("/bookings/user", name="ekino_get_user_bookings")
      * @param $userId
+     * @return JsonResponse
+     * @throws \LogicException
      */
-    public function getUserBookings($userId)
+    public function getUserBookings()
     {
-        //todo TB
+        session_start();
+
+        if (!isset($_SESSION['user'])) {
+            return new JsonResponse([
+                'bookings' => []
+            ]);
+        }
+
+        /** @var User $user */
+        $user = $_SESSION['user'];
+
+        $bookings = $this->getDoctrine()
+            ->getRepository(Booking::class)
+            ->findByUser($user)
+        ;
+
+        return new JsonResponse([
+            'bookings' => array_reverse($bookings)
+        ]);
     }
 
     public function getAll()

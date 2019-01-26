@@ -106,4 +106,12 @@ class User implements \JsonSerializable
     {
         return $this->password;
     }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
 }
