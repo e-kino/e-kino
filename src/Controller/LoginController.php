@@ -90,7 +90,14 @@ class LoginController extends AbstractController
     {
         // SET SESSION
         //$this->get('session')->set('loginUserId', $userData['id']);
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->getDoctrine()->getRepository(User::class);
+
+        /** @var User $user */
+        $user = $userRepository->findByEmail($userEmail);
+
         $this->get('session')->set('loginUserEmail', $userEmail);
+        $_SESSION['user'] = $user;
         //echo "SESSION - ".$this->get('session')->get('loginUserEmail')."\n";
     }
 

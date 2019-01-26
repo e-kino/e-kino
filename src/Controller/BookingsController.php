@@ -16,10 +16,13 @@ class BookingsController extends AbstractController
      * @Route("/bookings", methods={"POST"}, name="ekino_create_bookings")
      * @param Request $request
      * @return JsonResponse
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \LogicException
      */
     public function createBooking(Request $request)
     {
+        session_start();
+
         $userData = json_decode($request->getContent());
 
         $entityManager = $this->getDoctrine()->getManager();
@@ -28,10 +31,11 @@ class BookingsController extends AbstractController
             ->getRepository(Showing::class)
             ->find($userData->showingId);
 
-        if (!empty($userData->userId)) {
+        if (isset($_SESSION['user'])) {
+            $sessionUser = $_SESSION['user'];
             $user = $this->getDoctrine()
                 ->getRepository(User::class)
-                ->find($userData->userId);
+                ->findByEmail($sessionUser->getEmail());
         } else {
             $user = new User();
             $user->setDateAdd(new \DateTime());

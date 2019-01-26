@@ -5,9 +5,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    showings: []
+    showings: [],
+    user: {}
   },
   mutations: {
+    SET_USER(state, user) {
+
+    },
     SET_SHOWINGS(state, showings) {
       Vue.set(state, 'showings', showings)
     }
