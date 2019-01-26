@@ -99,9 +99,37 @@ class BookingsController extends AbstractController
             'bookings' => array_reverse($bookings)
         ]);
     }
-
+    /**
+     * @Route("/bookings/all", methods={"GET"}, name="ekino_get_all_bookings")
+     * @return JsonResponse
+     * @throws \LogicException
+     */
     public function getAll()
     {
-        //todo TB
+        
+       
+        $bookingsRepo= $this->getDoctrine()
+            ->getRepository(Booking::class);
+
+        $bookingsAll = $bookingsRepo->findAll();
+        //$bookingsAll = $bookingsRepo->createQueryBuilder('b')->select('b.id as ID')->getQuery();
+        
+         if (empty($bookingsAll)) {
+            return new JsonResponse(['error' => [
+                'code' => 400,
+                'message' => "Nie znaleziono rezerwacji"
+            ]]);
+        }
+
+        return new JsonResponse([
+            'bookings' => $bookingsAll
+        ]);
+        
+        session_start();
+        if (!isset($_SESSION['user'])) {
+            return new JsonResponse([
+                'bookings' => []
+            ]);
+        }     
     }
 }
