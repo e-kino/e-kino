@@ -168,8 +168,7 @@
 
         axios.post('/bookings', {
           seats: this.selectedSeats,
-          showingId: this.$route.params.showingId,
-          userId: null
+          showingId: this.$route.params.showingId
         })
           .then((r) => {
             this.bookings = r.data.bookings;
