@@ -15,7 +15,7 @@
             </strong>
           </div>
           <div style="margin-left: 200px">
-            <strong>{{ currentShowing.movie.name }}</strong>
+            <strong>{{ currentShowing.movie.name }} - {{ $route.params.date }} {{ currentShowing.timeShow }}</strong>
           </div>
         </div>
       </div>
@@ -168,7 +168,8 @@
 
         axios.post('/bookings', {
           seats: this.selectedSeats,
-          showingId: this.$route.params.showingId
+          showingId: this.$route.params.showingId,
+          dateBooking: this.$route.params.date + ' ' + this.currentShowing.timeShow
         })
           .then((r) => {
             this.bookings = r.data.bookings;

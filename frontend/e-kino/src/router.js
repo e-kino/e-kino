@@ -16,7 +16,7 @@ export default new Router({
       component: Home,
     },
     {
-      path: '/booking/:showingId',
+      path: '/booking/:date/:showingId',
       name: 'booking',
       component: Booking
     },

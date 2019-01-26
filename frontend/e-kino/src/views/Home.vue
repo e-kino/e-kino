@@ -30,7 +30,7 @@
     </section>
     <section class="container">
       <div class="columns is-multiline" style="margin-top: 30px">
-        <screening v-for="showing in showings" :key="showing.id" :showing="showing"></screening>
+        <screening v-for="showing in showings" :key="showing.id" :showing="showing" :date="date"></screening>
       </div>
     </section>
   </div>

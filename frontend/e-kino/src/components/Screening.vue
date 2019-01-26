@@ -19,7 +19,7 @@
         {{showing.movie.name}}
       </div>
       <footer class="card-footer">
-        <router-link :to="`/booking/${showing.id}`" class="card-footer-item">
+        <router-link :to="`/booking/${fDate}/${showing.id}`" class="card-footer-item">
           Rezerwuj
         </router-link>
       </footer>
@@ -29,12 +29,19 @@
 
 <script>
   import BIcon from "buefy/src/components/icon/Icon";
+  import moment from 'moment'
 
   export default {
     name: "Screening",
     components: {BIcon},
     props: {
-      showing: Object
+      showing: Object,
+      date: Date
+    },
+    computed: {
+      fDate() {
+        return moment(this.date).format('YYYY-MM-DD')
+      }
     }
   }
 </script>

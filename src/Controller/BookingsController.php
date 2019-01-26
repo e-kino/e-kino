@@ -47,10 +47,12 @@ class BookingsController extends AbstractController
 
         $bookings = [];
 
+        $dateBooking = \DateTime::createFromFormat('Y-m-d H:i', $userData->dateBooking);
+
         foreach ($userData->seats as $seat) {
             $booking = new Booking();
             $booking->setDateAdd(new \DateTime());
-            $booking->setDateBooking(new \DateTime());
+            $booking->setDateBooking($dateBooking);
             $booking->setSeatNumber($seat);
             $booking->setStatus(false);
             $booking->setUser($user);
