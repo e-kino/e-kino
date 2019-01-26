@@ -1,7 +1,6 @@
 /*
 -- Query: SELECT * FROM ekino.movie
 LIMIT 0, 1000
-
 -- Date: 2019-01-26 20:35
 */
 INSERT INTO `movie` (`name`,`description`,`age`,`date_add`) VALUES ('BOHEMIAN RHAPSODY','Porywająca opowieść o zespole Queen, jego muzyce i niezwykłym wokaliście Freddie’em Mercurym, który przełamując stereotypy i konwencje, zdobył uwielbienie niezliczonych fanów. Film ukazuje błyskotliwą karierę zespołu, który dzięki ikonicznym utworom i rewolucyjnemu brzmieniu wspiął się na szczyty sławy, dopóki skandalizujący styl życia Mercury’ego nie postawił wszystkiego pod znakiem zapytania. Triumfalny powrót zespołu podczas koncertu na rzecz Live Aid z udziałem cierpiącego na śmiertelną chorobę Mercury’ego wszedł na trwałe do historii muzyki rockowej i po dziś dzień stanowi źródło inspiracji dla wszystkich tych, którzy czują się inni, niepoprawnych marzycieli i wielbicieli muzyki na całym świecie.','12','2019-01-26 00:00:00');
